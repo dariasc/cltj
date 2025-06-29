@@ -222,4 +222,7 @@ namespace cds {
     }
 }
 
+#undef W
+#undef W2
+
 #endif //RCT_SUCC_SUPPORT_V_HPP

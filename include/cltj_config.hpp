@@ -19,12 +19,12 @@ namespace cltj{
     typedef std::array<std::string, 3> user_triple;
     typedef uint8_t spo_order_type[3];
     typedef spo_order_type spo_orders_type[6];
-    const static spo_orders_type spo_orders = {{0, 1, 2}, //SPO
-                                              {0, 2, 1}, //SOP
-                                              {1, 2, 0}, //POS
-                                              {1, 0, 2}, //PSO
-                                              {2, 0, 1}, //OSP
-                                              {2, 1, 0}}; //OPS
+    const static spo_orders_type spo_orders = {{0, 1, 2}, //SPO xy
+                                              {0, 2, 1}, //SOP  xz
+                                              {1, 2, 0}, //POS  yz
+                                              {1, 0, 2}, //PSO  xy
+                                              {2, 0, 1}, //OSP  xz
+                                              {2, 1, 0}}; //OPS yz
 
     //given an index i of a partial trie, we can compute the switching as ts_full_map[i/2]
     const static std::array<uint8_t, 3> ts_full_map = {4, 0, 2};

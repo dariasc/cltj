@@ -11,6 +11,10 @@
 #include <index/cltj_index_spo_lite.hpp>
 #include <query/ltj_algorithm.hpp>
 #include <util/rdf_util.hpp>
+#include <hashed/cltj_hashed_index.h>
+
+#include "query/ltj_algorithm_hashed.hpp"
+#include "query/ltj_iterator_hashed.hpp"
 
 using namespace std::chrono;
 using timer = std::chrono::high_resolution_clock;
@@ -20,7 +24,8 @@ namespace cltj {
     template<class Index    = cltj::compact_dyn_ltj,
              class Trait    = ltj::util::trait_size,
              class Iterator = ltj::ltj_iterator_lite<Index, uint8_t, uint64_t>,
-             class Veo      = ltj::veo::veo_adaptive<Iterator, Trait>>
+             class Veo      = ltj::veo::veo_adaptive<Iterator, Trait>,
+             class Algorithm = ltj::ltj_algorithm<Iterator, Veo>>
     class cltj_ids {
 
     public:
@@ -32,7 +37,7 @@ namespace cltj {
         typedef uint64_t const_type;
         typedef Iterator iterator_type;
         typedef Veo veo_type;
-        typedef ltj::ltj_algorithm<iterator_type,  veo_type> algorithm_type;
+        typedef Algorithm algorithm_type;
         typedef typename algorithm_type::tuple_type tuple_type;
 
     private:
@@ -158,6 +163,12 @@ namespace cltj {
 
     };
 
+    // Hashtable Tries
+    typedef cltj::cltj_ids<cltj::hashed_ltj, ltj::util::trait_size,
+            ltj::ltj_iterator_hashed<cltj::hashed_ltj, uint8_t, uint64_t>,
+            ltj::veo::veo_simple<ltj::ltj_iterator_hashed<cltj::compact_dyn_ltj, uint8_t, uint64_t>>,
+            ltj::ltj_algorithm_hashed<ltj::ltj_iterator_hashed<cltj::hashed_ltj, uint8_t, uint64_t>, ltj::veo::veo_simple<ltj::ltj_iterator_hashed<cltj::compact_dyn_ltj, uint8_t, uint64_t>>>
+    > cltj_ids_static_hash;
 
     //Full Tries + Dynamic + VEO adaptive
     typedef cltj::cltj_ids<> cltj_ids_dyn;
